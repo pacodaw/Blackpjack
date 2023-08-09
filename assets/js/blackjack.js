@@ -10,37 +10,37 @@
 
 let deck = [];
 const palosBaraja = ['C','D','H','S'];
-const specialCarts = ['J','Q','K','A'];
+const notNumCarts = ['J','Q','K','A'];
 
+// Create a new deck
+const createDeck = () => {
 
-const createDeck = (palosBaraja, specialCarts) => {
-
-    let tempDeck = [];
-    let i = 1;
-
-    for (let j = 0; j < palosBaraja.length; j++ ) {
-       // console.log (palosBaraja[j]);
-        do {
-            tempDeck.push(`${i}${palosBaraja[j]}.png`);
-            i++;
-        } while (i < 11)
-
-        for (let k = 0; k < 4; k++ ) {
-            tempDeck.push(`${specialCarts[k]}${palosBaraja[j]}.png`);
+    for (let i = 2; i <= 10; i++) {
+        
+        for ( let palo of palosBaraja ) {
+           
+            deck.push( `${i}${palo}.png` );
         }
+   }
 
-        i = 1;
+   for ( palo of palosBaraja ) {
+           
+        for ( let notNum of notNumCarts ) {
+   
+            deck.push( `${notNum}${palo}.png` );
+        }
     }
+    //Returns a shuffled copy of the deck
+    deck = _.shuffle( deck );
+    console.log(deck);
+    return deck;
+} 
 
-    return tempDeck
-}
+createDeck();
 
-    //console.log(deck.push(createDeck(palosBaraja, specialCarts)));
 
-deck = createDeck(palosBaraja, specialCarts);
-console.log (deck);
+const pedirCarta = () => {  
+    console.log (deck);
 
-const pedirCarta = () => {
-
-    
+   
 }
