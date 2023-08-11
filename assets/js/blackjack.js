@@ -1,16 +1,22 @@
 /**
  * 2C = Two of Clubs (Trévoles)
- * 2D = Two of Clubs (Diamonds)
- * 2H = Two of Clubs (Hearts)
- * 2S = Two of Clubs (Spades)
+ * 2D = Two of Diamonds
+ * 2H = Two of Hearts
+ * 2S = Two of Spades
  * 
- * 2-10 y J,Q,K,A
+ * 2-10 y J,Q,K,A   J,Q,K = 10,  A = 1 (optional = 11 not implemented)
  * .png
  */
 
 let deck = [];
-const palosBaraja = ['C','D','H','S'];
-const notNumCarts = ['J','Q','K','A'];
+const palosBaraja = ['C','D','H','S'];  //palo is suit
+const courtCards = ['J','Q','K','A'];   // figuras is court
+
+// Refs del HTML
+const btnNuevoJuego = document.querySelector('#btnNuevoJuego');
+const btnPedir = document.querySelector('#btnPedir');
+const btnDetener = document.querySelector('#btnDetener');
+
 
 // Create a new deck
 const createDeck = () => {
@@ -25,71 +31,60 @@ const createDeck = () => {
 
    for ( palo of palosBaraja ) {
            
-        for ( let notNum of notNumCarts ) {
+        for ( let court of courtCards ) {
    
-            deck.push( `${notNum}${palo}.png` );
+            deck.push( `${court}${palo}.png` );
         }
     }
     //Returns a shuffled copy of the deck
     deck = _.shuffle( deck );
-    // console.log( deck );
     return deck;
 } 
 
 createDeck();
 
-
 const pedirCarta = () => {  
 
-    if (deck.length === 0) {
+    if ( deck.length === 0 ) {
         throw 'No quedan cartas en el deck paayo ==, game over';
     }
 
     const carta = deck.pop();
-    // console.log( carta );
-    // console.log( deck );
     return carta;
 }
 
-let carta = pedirCarta();
-console.log( carta );
-
 const valorCarta = ( carta ) => {
-
     // string carts exception of 7 caract length '10D.png'
     // carta.charAt(0) === carta[0]
-    let valor = (carta.length === 6 ) ? carta.charAt(0) : carta.substring(0,2);
-    // === '10' 'J' || 'Q' || 'K' || 'A'
+    let valor = ( carta.length === 6 ) ? carta.charAt(0) : carta.substring(0,2);
 
-        switch ( valor ) {
-
-            case '10':
-                valor = 10;
-                break;
-
-            case 'J':
-                valor = 10;
-                break;
-
-            case 'Q':
-                valor = 11;
-                break;
-
-            case 'K':
-                valor = 12;
-                break;
-
-            case 'A':
-                valor = 1;
-                break;
-        }
-
-    valor *= 1;     // Convert character (values 2 to 9) to number type
-    return valor;
+    return ( isNaN( valor ) ) ?
+        (valor === 'A') ? 1 : 10
+        : valor * 1;             // Convert character(values 2 to 10) to number type
 }
 
-carta = valorCarta ( carta );
-console.log( carta );
+// Events
+btnPedir.addEventListener('click', () => {
+
+    carta = pedirCarta();
+
+    const divCartasJugador = document.querySelector('#jugador-cartas');
+
+    const cartaJugador = document.createElement( 'img' ) ;
+    cartaJugador.classList.add('carta');
+    cartaJugador.src = `assets/cartas/${carta}`;
+
+    divCartasJugador.append( cartaJugador );
+
+    let puntosCarta = valorCarta ( carta );
+
+    let puntosJugador = Number( document.querySelector( '#puntosJugador' ).textContent );
+    puntosJugador += puntosCarta;
+
+    document.querySelector( '#puntosJugador' ).innerText = puntosJugador.toString();
+
+})
 
 
-/* const turnoJugador = () => {} */
+
+
