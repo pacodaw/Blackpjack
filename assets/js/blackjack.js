@@ -69,17 +69,22 @@ const valorCarta = ( carta ) => {
         : valor * 1;             // Convert character(values 2 to 10) to number type
 }
 
+const crearCartaHTML = ( carta, divCartas ) => {
+
+    const imgCarta = document.createElement( 'img' ) ;
+    imgCarta.classList.add('carta');
+    imgCarta.src = `assets/cartas/${carta}`;
+    // Mostrar cartas jugador
+    divCartas.append( imgCarta );
+}
+
 // Event pedirCarta
 btnPedir.addEventListener('click', () => {
 
     carta = pedirCarta();
 
-    const cartaJugador = document.createElement( 'img' ) ;
-    cartaJugador.classList.add('carta');
-    cartaJugador.src = `assets/cartas/${carta}`;
-    // Mostrar cartas jugador
-    divCartasJugador.append( cartaJugador );
- 
+    crearCartaHTML( carta, divCartasJugador);
+
     puntosJugador += valorCarta ( carta );
     // Mostar puntos jugador
     puntosHTML[0].innerText = puntosJugador;
@@ -100,12 +105,8 @@ const turnoComputadora = ( puntosJugador ) => {
 
     carta = pedirCarta();
     
-    const cartaComputadora = document.createElement( 'img' );
-    cartaComputadora.classList.add( 'carta' );
-    cartaComputadora.src = `assets/cartas/${carta}`;
-    // Mostrar cartas Computadora
-    divCartasComputadora.append( cartaComputadora );
-    
+    crearCartaHTML( carta, divCartasComputadora);
+ 
     puntosComputador += valorCarta ( carta );
     // Mostar puntos computadora
     puntosHTML[1].innerText = puntosComputador;
