@@ -12,12 +12,18 @@ let deck = [];
 const palosBaraja = ['C','D','H','S'];  //palo is suit
 const courtCards = ['J','Q','K','A'];   // figuras is court
 
+let puntosJugador = 0,
+    puntosComputador =0;
+
 // Refs del HTML
-const btnNuevoJuego = document.querySelector('#btnNuevoJuego');
-const btnPedir = document.querySelector('#btnPedir');
-const btnDetener = document.querySelector('#btnDetener');
+const btnNuevoJuego = document.querySelector( '#btnNuevoJuego' );
+const btnPedir = document.querySelector( '#btnPedir' );
+const btnDetener = document.querySelector( '#btnDetener' );
 
+const divCartasJugador = document.querySelector( '#jugador-cartas' );
+const divCartasComputadora = document.querySelector( '#computador-cartas' );
 
+const puntosHTML = document.querySelectorAll( '#puntosHTML' );
 // Create a new deck
 const createDeck = () => {
 
@@ -63,55 +69,46 @@ const valorCarta = ( carta ) => {
         : valor * 1;             // Convert character(values 2 to 10) to number type
 }
 
-// Events
+// Event pedirCarta
 btnPedir.addEventListener('click', () => {
 
     carta = pedirCarta();
 
-    const divCartasJugador = document.querySelector('#jugador-cartas');
-
     const cartaJugador = document.createElement( 'img' ) ;
     cartaJugador.classList.add('carta');
     cartaJugador.src = `assets/cartas/${carta}`;
-
     // Mostrar cartas jugador
     divCartasJugador.append( cartaJugador );
-
-    let puntosCarta = valorCarta ( carta );
-
-    let puntosJugador = Number( document.querySelector( '#puntosJugador' ).textContent );
-
-    // Si superan 21 pasa turno a máquina
-    puntosJugador += puntosCarta;
-
-    if ( puntosJugador > 21 ) turnoComputadora( puntosJugador );
-
+ 
+    puntosJugador += valorCarta ( carta );
     // Mostar puntos jugador
-    document.querySelector( '#puntosJugador' ).innerText = puntosJugador.toString();
+    puntosHTML[0].innerText = puntosJugador;
+
+    // Si superan 21 jugador pierde y pasa turno a computadora
+    if ( puntosJugador > 21 ) {
+        console.warn( 'Jugador pierde' );
+        btnPedir.disabled = true;
+        turnoComputadora( puntosJugador );
+
+    } else if ( puntosJugador === 21 ) {
+        btnPedir.disabled = true;
+    }
 
 })
 
 const turnoComputadora = ( puntosJugador ) => {
 
     carta = pedirCarta();
-
-    const divCartasComputadora = document.querySelector( '#computador-cartas' );
     
     const cartaComputadora = document.createElement( 'img' );
     cartaComputadora.classList.add( 'carta' );
     cartaComputadora.src = `assets/cartas/${carta}`;
-
     // Mostrar cartas Computadora
     divCartasComputadora.append( cartaComputadora );
     
-    let puntosCarta = valorCarta ( carta );
-
-    let puntosComputador = Number ( document.querySelector( '#puntosComputadora' ).textContent );
-
-    puntosComputador += puntosCarta;
-
-    // Mostar puntos jugador
-    document.querySelector( '#puntosComputadora').innerText = puntosComputador.toString();
+    puntosComputador += valorCarta ( carta );
+    // Mostar puntos computadora
+    puntosHTML[1].innerText = puntosComputador;
     
     if ( puntosJugador > 21 ) console.log ('compu gana');
 
