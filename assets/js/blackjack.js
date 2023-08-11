@@ -74,17 +74,47 @@ btnPedir.addEventListener('click', () => {
     cartaJugador.classList.add('carta');
     cartaJugador.src = `assets/cartas/${carta}`;
 
+    // Mostrar cartas jugador
     divCartasJugador.append( cartaJugador );
 
     let puntosCarta = valorCarta ( carta );
 
     let puntosJugador = Number( document.querySelector( '#puntosJugador' ).textContent );
+
+    // Si superan 21 pasa turno a máquina
     puntosJugador += puntosCarta;
 
+    if ( puntosJugador > 21 ) turnoComputadora( puntosJugador );
+
+    // Mostar puntos jugador
     document.querySelector( '#puntosJugador' ).innerText = puntosJugador.toString();
 
 })
 
+const turnoComputadora = ( puntosJugador ) => {
 
+    carta = pedirCarta();
+
+    const divCartasComputadora = document.querySelector( '#computador-cartas' );
+    
+    const cartaComputadora = document.createElement( 'img' );
+    cartaComputadora.classList.add( 'carta' );
+    cartaComputadora.src = `assets/cartas/${carta}`;
+
+    // Mostrar cartas Computadora
+    divCartasComputadora.append( cartaComputadora );
+    
+    let puntosCarta = valorCarta ( carta );
+
+    let puntosComputador = Number ( document.querySelector( '#puntosComputadora' ).textContent );
+
+    puntosComputador += puntosCarta;
+
+    // Mostar puntos jugador
+    document.querySelector( '#puntosComputadora').innerText = puntosComputador.toString();
+    
+    if ( puntosJugador > 21 ) console.log ('compu gana');
+
+}
 
 
