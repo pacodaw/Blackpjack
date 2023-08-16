@@ -9,21 +9,19 @@
  */
 
 let deck = [];
-const palosBaraja = ['C','D','H','S'];  //palo is suit
-const courtCards  = ['J','Q','K','A'];   // figuras is court
+const palosBaraja = ['C','D','H','S'],  //palo is suit
+      courtCards  = ['J','Q','K','A'];   // figuras is court
 
 let puntosJugador    = 0,
     puntosComputador = 0;
 
 // Refs del HTML
-const btnNuevoJuego = document.querySelector( '#btnNuevoJuego' );
-const btnPedir      = document.querySelector( '#btnPedir' );
-const btnDetener    = document.querySelector( '#btnDetener' );
-
-const divCartasJugador     = document.querySelector( '#jugador-cartas' );
-const divCartasComputadora = document.querySelector( '#computador-cartas' );
-
-const puntosHTML = document.querySelectorAll( '#puntosHTML' );
+const btnNuevoJuego        = document.querySelector( '#btnNuevoJuego' ),
+      btnPedir             = document.querySelector( '#btnPedir' ),
+      btnDetener           = document.querySelector( '#btnDetener' ),
+      divCartasJugador     = document.querySelector( '#jugador-cartas' ),
+      divCartasComputadora = document.querySelector( '#computador-cartas' ),
+      puntosHTML           = document.querySelectorAll( '#puntosHTML' );
 
 // Create a new deck
 const createDeck = () => {
@@ -80,7 +78,7 @@ const crearCartaHTML = ( carta, divCartas ) => {
     divCartas.append( imgCarta );
 }
 
-// Event pedirCarta jugador
+// Event player clicks on the button to ask for a card
 btnPedir.addEventListener('click', () => {
 
     carta = pedirCarta();
@@ -101,6 +99,36 @@ btnPedir.addEventListener('click', () => {
 
 });
 
+const chooseWinner = ( puntosJugador, puntosComputador ) => {
+        
+    setTimeout(() => {
+
+        if ( puntosJugador > 21 ) {
+    
+            alert ('COMPUTADORA GANA !!!');
+    
+        } else if ( puntosComputador > 21 ) {
+    
+            alert ('JUGADOR GANA !!!');
+                  
+        } else if ( puntosJugador < puntosComputador ) {
+    
+            alert ('COMPUTADORA GANA !!!');
+            
+        } else if ( puntosJugador > puntosComputador ) {
+    
+            alert ('JUGADOR GANA !!!');
+    
+        } else if ( puntosJugador === puntosComputador ) {
+    
+            alert ('EMPATE !!!');
+    
+        }
+    
+        }, 100 );
+
+}
+
 const turnoComputadora = ( puntosJugador ) => {
 
     do {
@@ -114,58 +142,40 @@ const turnoComputadora = ( puntosJugador ) => {
            
     } while ( (puntosJugador <= 21) && (puntosJugador > puntosComputador) );
 
-    console.log( {puntosJugador} );
-    console.log( {puntosComputador} );
-
-    if ( puntosJugador > 21 ) {
-
-        console.log('COMPUTADORA GANA !!!');
-
-    } else if( puntosComputador > 21 ) {
-
-        console.log('JUGADOR GANA !!!');
-              
-    } else if( puntosJugador < puntosComputador ) {
-
-        console.log('COMPUTADORA GANA !!!');
-        
-    } else if( puntosJugador > puntosComputador ) {
-
-        console.log('JUGADOR GANA !!!');
-
-    } else if ( puntosJugador === puntosComputador ) {
-
-        console.log('EMPATE !!!');
-
-    }
+    chooseWinner ( puntosJugador, puntosComputador );
+    
 }
 
-// Terminar turno jugador
+// To end player turn
 btnDetener.addEventListener('click', () => {
 
     btnPedir.disabled = true;
     btnDetener.disabled = true;
-
     turnoComputadora( puntosJugador );
 });
 
-function removeAllChildNodes( parent ) {
+/* function removeAllChildNodes( parent ) {
     while ( parent.firstChild ) {
         parent.removeChild( parent.firstChild );
     }
-}
+} */
 
+// To start a new game, reset values, create new deck
 btnNuevoJuego.addEventListener('click', () => {
 
+    console.clear();
+/*
     removeAllChildNodes( divCartasJugador );
-    removeAllChildNodes( divCartasComputadora );
+    removeAllChildNodes( divCartasComputadora ); */
+    divCartasJugador.innerHTML     = '';
+    divCartasComputadora.innerHTML = '';
 
-    puntosJugador = 0;
+    puntosJugador    = 0;
     puntosComputador = 0;   
     puntosHTML[0].innerText = 0;
     puntosHTML[1].innerText = 0;
 
-    btnPedir.disabled = false;
+    btnPedir.disabled   = false;
     btnDetener.disabled = false;
 
     deck = [];
